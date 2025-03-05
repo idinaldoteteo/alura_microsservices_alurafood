@@ -1,5 +1,6 @@
 package br.com.alurafood.payments.service;
 
+import br.com.alurafood.payments.dto.PaymentDetailDto;
 import br.com.alurafood.payments.dto.PaymentDto;
 import br.com.alurafood.payments.model.Payment;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ public interface IPaymentService {
 
     Page<PaymentDto> getAll(@PageableDefault(size = 10) Pageable page);
     PaymentDto getById(Long id);
+    PaymentDetailDto getWithDetailsById(Long id);
     PaymentDto createPayment(PaymentDto dto);
     PaymentDto updatePayment(Long id, PaymentDto dto);
     void deletePayment(Long id);

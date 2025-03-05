@@ -1,8 +1,10 @@
 package br.com.alurafood.payments.controller;
 
+import br.com.alurafood.payments.dto.PaymentDetailDto;
 import br.com.alurafood.payments.dto.PaymentDto;
 import br.com.alurafood.payments.service.IPaymentService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import java.net.URI;
 @RequestMapping("/payment")
 public class PaymentController {
 
+    private int counterCircuit = 0;
+    private int counterRetry = 0;
+
     @Autowired
     private IPaymentService service;
 
@@ -29,6 +34,17 @@ public class PaymentController {
     @GetMapping("{id}")
     public ResponseEntity<PaymentDto> getById(@PathVariable @NotNull Long id) {
         PaymentDto dto = service.getById(id);
+
+        if ( dto == null ) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<PaymentDetailDto> getWithDetailsById(@PathVariable @NotNull Long id) {
+        PaymentDetailDto dto = service.getWithDetailsById(id);
 
         if ( dto == null ) {
             return ResponseEntity.notFound().build();
@@ -60,13 +76,22 @@ public class PaymentController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/confirm")
+    @PatchMapping("/{id}/circuit-confirm")
     @CircuitBreaker(name = "updateOrder", fallbackMethod = "paymentAllowedWithoutIntegration")
-    public void confirm(@PathVariable @NotNull Long id){
+    public void circuitConfirm(@PathVariable @NotNull Long id){
+        System.out.println(String.format("call Circuit %s time(s)", ++counterCircuit));
+        service.confirmPayment(id);
+    }
+
+    @PatchMapping("/{id}/retry-confirm")
+    @Retry(name = "updateOrderRetry", fallbackMethod = "paymentAllowedWithoutIntegration")
+    public void retryConfirm(@PathVariable @NotNull Long id){
+        System.out.println(String.format("call Retry %s time(s)", ++counterRetry));
         service.confirmPayment(id);
     }
 
     public void paymentAllowedWithoutIntegration(Long id, Exception e){
+        System.out.println("Call paymentAllowedWithoutIntegration");
         service.updateStatusOrder(id);
     }
 }

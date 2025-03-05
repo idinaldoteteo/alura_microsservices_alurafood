@@ -1,5 +1,6 @@
 package br.com.alurafood.payments.service;
 
+import br.com.alurafood.payments.dto.PaymentDetailDto;
 import br.com.alurafood.payments.dto.PaymentDto;
 import br.com.alurafood.payments.http.IOrderClient;
 import br.com.alurafood.payments.model.Payment;
@@ -37,6 +38,17 @@ public class PaymentService implements IPaymentService {
 
         if (payment.isPresent()) {
             PaymentDto dto = mapper.map(payment, PaymentDto.class);
+            return dto;
+        }
+
+        return null;
+    }
+
+    public PaymentDetailDto getWithDetailsById(Long id) {
+        Optional<Payment> payment = paymentRepository.findById(id);
+
+        if (payment.isPresent()) {
+            PaymentDetailDto dto = mapper.map(payment, PaymentDetailDto.class);
             dto.setOrder(orderClient.getOrderByPaymentId(dto.getOrderId()));
             return dto;
         }
