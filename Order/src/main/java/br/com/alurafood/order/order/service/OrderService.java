@@ -1,5 +1,6 @@
 package br.com.alurafood.order.order.service;
 
+import br.com.alurafood.order.order.dto.IOrderDetails;
 import br.com.alurafood.order.order.dto.OrderDto;
 import br.com.alurafood.order.order.model.Order;
 import br.com.alurafood.order.order.model.Status;
@@ -55,6 +56,10 @@ public class OrderService implements IOrderService {
 
     public void updateStatus(OrderDto orderDto) {
         repository.save(mapper.map(orderDto, Order.class));
+    }
+
+    public List<IOrderDetails> reportOrder() {
+        return repository.reportOrder();
     }
 
 }

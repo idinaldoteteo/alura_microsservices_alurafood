@@ -1,5 +1,6 @@
 package br.com.alurafood.order.order.controller;
 
+import br.com.alurafood.order.order.dto.IOrderDetails;
 import br.com.alurafood.order.order.dto.OrderDto;
 import br.com.alurafood.order.order.model.Status;
 import br.com.alurafood.order.order.service.IOrderService;
@@ -57,4 +58,10 @@ public class OrderController {
 
         return ResponseEntity.ok("Order status changed to " + status);
     }
+
+    @GetMapping("/order-details")
+    public ResponseEntity<List<IOrderDetails>> report() {
+        return ResponseEntity.ok(orderService.reportOrder());
+    }
+
 }
