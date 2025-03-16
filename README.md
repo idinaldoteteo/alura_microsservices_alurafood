@@ -17,11 +17,30 @@
 
 # :hammer: Project Features
 * Database MySql
-* Service Discovery and Load Balance with Gateway
+* Database PostgreSql
+* lib lombok
+* lib modelmapper
+* lib flyway to import the script sql
+* Service Registration and Discovery
+* Load Balance with Gateway
 * Spring Cloud
 * Communication Sync with Open Feign
-* Circuit breaker
-* Fallback
+* lib resilience4j
+*   Circuit breaker
+*   Retry
+*   Fallback
+
+# :hammer: AWS Project Features
+* VPC
+* ClUSTER
+* ECS (service)
+* EC2
+* AWS Fargate
+* RDS with my docker image of my project Order
+* ECR
+* Cloudformation
+* Cloudwatch
+* Scale Memory and CPU
 
 
 
