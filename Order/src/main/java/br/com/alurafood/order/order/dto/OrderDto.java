@@ -1,5 +1,6 @@
 package br.com.alurafood.order.order.dto;
 
+import br.com.alurafood.order.order.model.Order;
 import br.com.alurafood.order.order.model.OrderItem;
 import br.com.alurafood.order.order.model.Status;
 import lombok.AllArgsConstructor;
@@ -21,4 +22,7 @@ public class OrderDto {
     private LocalDateTime datetime;
     private Status status;
     private List<OrderItemDto> itens = new ArrayList<>();
+
+    public OrderDto(Order order) {
+    }
 }

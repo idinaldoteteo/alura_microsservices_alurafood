@@ -27,8 +27,8 @@ public class OrderService implements IOrderService {
         return repository
                 .findAll()
                 .stream()
-                .map(p -> mapper.map(p, OrderDto.class))
-                .collect(Collectors.toList());
+                .map(OrderDto::new)
+                .toList();
     }
 
     public OrderDto getById(Long id){
