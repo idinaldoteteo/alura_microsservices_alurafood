@@ -7,7 +7,10 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -56,10 +59,9 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<PaymentDto> create(@RequestBody @Valid PaymentDto dto, UriComponentsBuilder uriBuilder) {
         PaymentDto payment = service.createPayment(dto);
-//        URI uri = uriBuilder.path("/payment/{id}").buildAndExpand(payment.getId()).toUri();
+        URI uri = uriBuilder.path("/payment/{id}").buildAndExpand(payment.getId()).toUri();
 
-//        return ResponseEntity.created(uri).body(payment);
-        return ResponseEntity.ok(payment);
+        return ResponseEntity.created(uri).body(payment);
     }
 
     @PutMapping("{id}")

@@ -1,0 +1,3 @@
+VHOST: /
+QUEUE: payment.confirmation
+INDEX: v2

@@ -8,7 +8,9 @@ import br.com.alurafood.payments.model.Status;
 import br.com.alurafood.payments.repository.IPaymentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,12 @@ public class PaymentService implements IPaymentService {
 
     @Autowired
     private IOrderClient orderClient;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Value("${queue.name.payment.confirmation}")
+    private String queueNamePayment;
 
     public Page<PaymentDto> getAll(Pageable page) {
         return paymentRepository
@@ -59,7 +67,12 @@ public class PaymentService implements IPaymentService {
     public PaymentDto createPayment(PaymentDto dto) {
         Payment payment = mapper.map(dto, Payment.class);
         payment.setStatus(Status.CREATED);
-        paymentRepository.save(payment);
+        payment = paymentRepository.save(payment);
+
+        // Send message to queue
+//        Message message = new Message(("payment requested number " + payment.getId()).getBytes());
+        dto.setId(payment.getId());
+        rabbitTemplate.convertAndSend(queueNamePayment, dto);
 
         return mapper.map(payment, PaymentDto.class);
     }
