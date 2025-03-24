@@ -1,7 +1,6 @@
 package br.com.alurafood.payments.config.amqp;
 
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -12,14 +11,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableRabbit
-public class rabbitmqConfig {
+public class PaymentProducer {
 
-    @Value("${queue.name.payment.confirmation}")
-    private String paymentQueue;
+    @Value("${exchange.payment.confirmation}")
+    private String exchange;
 
     @Bean
-    public Queue queue (){
-        return new Queue(paymentQueue, true);
+    public FanoutExchange exchange(){
+        return new FanoutExchange(exchange);
     }
 
     @Bean

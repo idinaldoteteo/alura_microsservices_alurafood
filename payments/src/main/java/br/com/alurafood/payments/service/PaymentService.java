@@ -32,8 +32,8 @@ public class PaymentService implements IPaymentService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${queue.name.payment.confirmation}")
-    private String queueNamePayment;
+    @Value("${exchange.payment.confirmation}")
+    private String exchange;
 
     public Page<PaymentDto> getAll(Pageable page) {
         return paymentRepository
@@ -72,7 +72,8 @@ public class PaymentService implements IPaymentService {
         // Send message to queue
 //        Message message = new Message(("payment requested number " + payment.getId()).getBytes());
         dto.setId(payment.getId());
-        rabbitTemplate.convertAndSend(queueNamePayment, dto);
+//        rabbitTemplate.convertAndSend(queueNamePayment, dto); // when I send to directly to queue
+        rabbitTemplate.convertAndSend(exchange,"", dto);
 
         return mapper.map(payment, PaymentDto.class);
     }

@@ -12,4 +12,5 @@ public interface IOrderService {
     OrderDto create(OrderDto orderDto);
     void updateStatus(OrderDto orderDto);
     List<IOrderDetails> reportOrder();
+    void requestedQueuePaymentConfirm(String message);
 }

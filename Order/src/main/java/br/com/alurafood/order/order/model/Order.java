@@ -30,6 +30,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String msg;
+
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "order")
     private List<OrderItem> itens = new ArrayList<>();
 }

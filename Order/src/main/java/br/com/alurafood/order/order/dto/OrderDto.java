@@ -21,6 +21,7 @@ public class OrderDto {
     private Long id;
     private LocalDateTime datetime;
     private Status status;
+    private String msg;
     private List<OrderItemDto> itens = new ArrayList<>();
 
     public OrderDto(Order order) {

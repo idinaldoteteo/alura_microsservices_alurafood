@@ -1,0 +1,3 @@
+${spring.application.name}
+Active profile: ${spring.profiles.active}
+Powered by Spring Boot ${spring-boot.version}
