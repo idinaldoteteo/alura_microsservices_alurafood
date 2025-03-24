@@ -4,11 +4,12 @@
 
 1) route Eureka Server: http://localhost:8762/
 2) route Gateway: http://localhost:8090
-3) route order microsservice to get all orders: http://localhost:8090/order-ms/order
-4) route payment microsservice to get all payment: http://localhost:8090/payments-ms/payment
-4.1) queue payment.confirmation with biding exchange fanout.payment.confirmation 
-5) route rating microsservice to get all payment confirmed: http://localhost:8090/rating-ms/rating
-5.1) queue rating.payment.confirmation with biding exchange fanout.payment.confirmation 
+3) route order microsservice handling requests: http://localhost:8090/order-ms/order
+4) route payment microsservice handling requests: http://localhost:8090/payments-ms/payment
+5) route rating microsservice handling requests payment confirmed: http://localhost:8090/rating-ms/rating
+6) payment microsservice creating an exchange fanout.payment.confirmation 
+7) order microsservice creating a queue payment.confirmation (binding exchange)
+8) rating microsservice creating a queue rating.payment.confirmation (binding exchange)
 
 
 # Microsservices:
@@ -16,6 +17,7 @@
 * GATEWAY: http://localhost:8090
 * ORDER: http://localhost:8090/order-ms
 * PAYMENT: http://localhost:8090/payments-ms
+* RATING: http://localhost:8090/rating-ms
 
 
 # Queues:
